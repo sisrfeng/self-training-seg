@@ -1,3 +1,4 @@
-dataset/
+dataset/voc/
+dataset/cityScapes/
 pretrained/
 outdir/
