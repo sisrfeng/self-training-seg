@@ -1,3 +1,7 @@
+import os ; wf_home = os.path.expanduser("~/")
+import sys ; sys.path.append(wf_home)
+from dotF.leo_common.leo_base import *
+
 from dataset.semi import SemiDataset
 from model.semseg.deeplabv2 import DeepLabV2
 from model.semseg.deeplabv3plus import DeepLabV3Plus
