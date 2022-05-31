@@ -1,0 +1,33 @@
+# vim:ft=zsh
+
+export Semi_cfg='pascal/1_8/split_0'
+
+cd /data2/wf2/self-training-seg/
+pyclean . -v  >/dev/null  2>&1
+
+
+chpwd_functions=()
+local gpus=$( python3 ~/dotF/leo_common/find_gpus.py 4 )
+echo '使用gpu: '  ${gpus}
+
+CUDA_VISIBLE_DEVICES=${gpus} python -W ignore                      \
+  main.py                                                          \
+    --dataset             pascal                                   \
+    --data-root           /data2/wf2/self-training-seg/dataset/voc \
+    --batch-size          32                                       \
+    `# --batch-size          16                                    ` \
+    --backbone            resnet50                                 \
+    --model               deeplabv3plus                            \
+    \
+    --labeled-id-path     dataset/splits/$Semi_cfg/labeled.txt     \
+    --unlabeled-id-path   dataset/splits/$Semi_cfg/unlabeled.txt   \
+    --pseudo-mask-path    outdir/pseudo_masks/$Semi_cfg            \
+    --save-path           outdir/models/$Semi_cfg                  \
+    `# These are for ST++:`                                          \
+    --plus                                                         \
+    --reliable-id-path    outdir/reliable_ids/$Semi_cfg            \
+
+# ===========================================================
+
+chpwd_functions=("chpwd_recent_dirs" "ls_after_cd" "Dating")
+
